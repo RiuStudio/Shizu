@@ -1,0 +1,15 @@
+### Developer command!
+dev_title: "Riu"
+dev_desc: "I'm working on a project, namely Sora and Shizu is one of the music bots for our Discord server."
+dev_foot: "You can enjoy the Shizu bot if you log in to the Sora Discord [server!]()"
+### Invite command!
+inv_title: "✉️ %{username}"
+inv_desc: "Thanks for Inviting me in advance!"
+
+### Ping command!
+ping_title: "🏓 "
+ping_desc: "**Ping:** `%{ping}ms`\n**Response Time:** `%{response}ms`"
+
+### Uptime command!
+uptime_title: "🕒 "
+uptime_desc: "**Uptime:** `%{uptime}`"
