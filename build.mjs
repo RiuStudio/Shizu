@@ -1,12 +1,9 @@
-// BETA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 import { spawn } from "node:child_process";
 import archiver from "dir-archiver";
 import { XMLParser, XMLBuilder } from "fast-xml-parser";
 import fse from "fs-extra";
 import { plsParseArgs } from "plsargs";
 import copydir from "copy-dir";
-import path from "path";
 const args = plsParseArgs(process.argv.slice(2));
 const parser = new XMLParser();
 const builder = new XMLBuilder();
@@ -22,11 +19,11 @@ const ignored = [
   ".prettierrc.json",
   "app.yml",
   ".git",
-  ".cylane",
+  ".sora",
   "src",
   "scripts",
   "build.mjs",
-  "byteblaze.database.json",
+  "sora.database.json",
   "pnpm-lock.yaml",
   "tsconfig.json",
   ".github",
@@ -49,7 +46,7 @@ function logger(data, type) {
   }
 }
 
-logger("Shizu .zip build script", "info");
+logger("Sora .zip build script", "info");
 logger("Version: 1.0.0", "info");
 
 if (!acceptedParams.includes(args.get(0))) {
@@ -57,11 +54,10 @@ if (!acceptedParams.includes(args.get(0))) {
 }
 
 if (args.get(0) == acceptedParams[0]) {
-  const checkDir = ["./dist", "./out", "./.cylane", "./logs"];
+  const checkDir = ["./dist", "./out", "./.sora", "./logs"];
 
   checkDir.forEach(async (data) => {
-    if (fse.existsSync(data))
-      fse.rmdirSync(data, { recursive: true, force: true });
+    if (fse.existsSync(data)) fse.rmdirSync(data, { recursive: true, force: true });
   });
 
   logger("Clean successfully!", "info");
@@ -69,10 +65,7 @@ if (args.get(0) == acceptedParams[0]) {
 }
 
 if (args.get(0) == acceptedParams[2]) {
-  const child = spawn(/^win/.test(process.platform) ? "npm.cmd" : "npm", [
-    "run",
-    "build:full",
-  ]);
+  const child = spawn(/^win/.test(process.platform) ? "npm.cmd" : "npm", ["run", "build:full"]);
 
   child.stdout.on("data", (data) => {
     logger(data, "build");
@@ -106,18 +99,14 @@ if (args.get(0) == acceptedParams[2]) {
 
     manifest.metadata.bot.version = `${botVersion}+${objectDate}`;
 
-    fse.writeFileSync(
-      "./dist/manifest.xml",
-      builder.build(manifest) + warningData,
-      "utf-8"
-    );
+    fse.writeFileSync("./dist/manifest.xml", builder.build(manifest) + warningData, "utf-8");
 
     logger("Edit manifest file complete!", "build");
 
     await fse.mkdir("./out");
-    await fse.mkdir("./out/Shizu");
+    await fse.mkdir("./out/Sora");
 
-    copydir.sync(".", "./out/Shizu", {
+    copydir.sync(".", "./out/Sora", {
       filter: function (stat, filepath, filename) {
         if (stat === "file" && ignored.includes(filename)) {
           return false;
@@ -131,10 +120,7 @@ if (args.get(0) == acceptedParams[2]) {
   });
 } else {
   // Build (Local build)
-  const child = spawn(/^win/.test(process.platform) ? "npm.cmd" : "npm", [
-    "run",
-    "build:full",
-  ]);
+  const child = spawn(/^win/.test(process.platform) ? "npm.cmd" : "npm", ["run", "build:full"]);
 
   child.stdout.on("data", (data) => {
     logger(data, "build");
@@ -168,17 +154,13 @@ if (args.get(0) == acceptedParams[2]) {
 
     manifest.metadata.bot.version = `${botVersion}+${objectDate}`;
 
-    fse.writeFileSync(
-      "./dist/manifest.xml",
-      builder.build(manifest) + warningData,
-      "utf-8"
-    );
+    fse.writeFileSync("./dist/manifest.xml", builder.build(manifest) + warningData, "utf-8");
 
     logger("Edit manifest file complete!", "build");
 
     // Archive build
     await fse.mkdir("./out");
-    const path = `./out/Shizu.zip`;
+    const path = `./out/Sora.zip`;
 
     const zipper = new archiver(".", path, false, ignored);
     zipper.createZip();
